@@ -582,20 +582,53 @@
             const commentInput = document.getElementById('comment-input');
             const submitButton = document.getElementById('submit-comment');
             
-            // Verify all elements are found
-            if (!sidebar || !toggle || !commentsList || !commentInput || !submitButton) {
-                console.error('Missing required elements:', {
-                    sidebar: !!sidebar,
-                    toggle: !!toggle,
-                    commentsList: !!commentsList,
-                    commentInput: !!commentInput,
-                    submitButton: !!submitButton
+            // Initialize comments
+            let comments = {};
+            
+            // Load comments from Firebase
+            function loadComments() {
+                console.log('Loading comments from Firebase...');
+                const commentsRef = database.ref('comments');
+                
+                commentsRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        comments = data;
+                        updateAllMarkers();
+                        if (sidebar.classList.contains('active')) {
+                            showAllComments();
+                        }
+                    } else {
+                        comments = {};
+                        updateAllMarkers();
+                    }
+                }, (error) => {
+                    console.error('Error loading comments:', error);
+                    // Fallback to localStorage if Firebase fails
+                    comments = JSON.parse(localStorage.getItem('documentComments')) || {};
                 });
-                return;
             }
             
-            // Initialize comments from localStorage
-            let comments = JSON.parse(localStorage.getItem('documentComments')) || {};
+            // Save comments to Firebase
+            async function saveComments() {
+                try {
+                    await database.ref('comments').set(comments);
+                    // Also save to localStorage as backup
+                    localStorage.setItem('documentComments', JSON.stringify(comments));
+                } catch (error) {
+                    console.error('Error saving comments:', error);
+                    // Fallback to localStorage
+                    localStorage.setItem('documentComments', JSON.stringify(comments));
+                }
+            }
+            
+            // Update all markers
+            function updateAllMarkers() {
+                document.querySelectorAll('.comment-marker').forEach(marker => {
+                    const sectionId = marker.getAttribute('data-section');
+                    updateMarkerCount(marker, sectionId);
+                });
+            }
             
             // Add comment markers to sections
             sections.forEach((section, index) => {
@@ -703,7 +736,7 @@
             }
             
             // Delete comment
-            function deleteComment(sectionId, timestamp) {
+            async function deleteComment(sectionId, timestamp) {
                 comments[sectionId] = comments[sectionId].filter(c => c.timestamp !== timestamp);
                 if (comments[sectionId].length === 0) {
                     delete comments[sectionId];
@@ -713,8 +746,8 @@
                 const marker = document.querySelector(`[data-section="${sectionId}"].comment-marker`);
                 updateMarkerCount(marker, sectionId);
                 
-                // Save to localStorage
-                saveComments();
+                // Save comments
+                await saveComments();
                 
                 // Refresh current view
                 if (submitButton.getAttribute('data-section')) {
@@ -724,13 +757,8 @@
                 }
             }
             
-            // Save comments to localStorage
-            function saveComments() {
-                localStorage.setItem('documentComments', JSON.stringify(comments));
-            }
-            
             // Handle comment submission
-            function handleCommentSubmit() {
+            async function handleCommentSubmit() {
                 const text = commentInput.value.trim();
                 const sectionId = submitButton.getAttribute('data-section');
                 
@@ -747,8 +775,8 @@
                     }
                     comments[sectionId].push(comment);
                     
-                    // Save to localStorage
-                    saveComments();
+                    // Save comments
+                    await saveComments();
                     
                     // Update UI
                     const commentElement = createCommentElement(comment, sectionId);
@@ -778,6 +806,9 @@
                 submitButton.setAttribute('data-section', firstSectionId);
             }
             
+            // Load comments when page loads
+            loadComments();
+            
             console.log('Comment system initialized successfully');
         });
     </script>
@@ -799,5 +830,27 @@
         </svg>
         Comments
     </button>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJaJuHUrcAB7xfcloJ9FiMR14c8PK4VsA",
+            authDomain: "cutting-edge-e11c3.firebaseapp.com",
+            databaseURL: "https://cutting-edge-e11c3-default-rtdb.firebaseio.com",
+            projectId: "cutting-edge-e11c3",
+            storageBucket: "cutting-edge-e11c3.firebasestorage.app",
+            messagingSenderId: "304966709695",
+            appId: "1:304966709695:web:daf03bf27997fd8fe7b10a",
+            measurementId: "G-ZVP8ER5CF5"
+          };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
 </body>
 </html> 
