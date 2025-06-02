@@ -761,31 +761,21 @@
             async function handleCommentSubmit() {
                 const text = commentInput.value.trim();
                 const sectionId = submitButton.getAttribute('data-section');
-                
                 if (text && sectionId) {
                     // Create new comment
                     const comment = {
                         text,
                         timestamp: new Date().toISOString()
                     };
-                    
                     // Add to storage
                     if (!comments[sectionId]) {
                         comments[sectionId] = [];
                     }
                     comments[sectionId].push(comment);
-                    
-                    // Save comments
+                    // Save comments to Firebase (this will trigger the .on('value') event)
                     await saveComments();
-                    
-                    // Update UI
-                    const commentElement = createCommentElement(comment, sectionId);
-                    commentsList.appendChild(commentElement);
                     commentInput.value = '';
-                    
-                    // Update marker
-                    const marker = document.querySelector(`[data-section="${sectionId}"].comment-marker`);
-                    updateMarkerCount(marker, sectionId);
+                    // DO NOT update the UI here! Let the Firebase event do it.
                 }
             }
             
