@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Statement Automation - Project Timeline</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 4px;
+        }
+        .user-stories {
+            margin-top: 30px;
+        }
+        .user-story {
+            background: #f8fafc;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #2563eb;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AP Statement Automation - Project Timeline</h1>
+
+        <!-- Project Setup Phase -->
+        <div class="chart-container">
+            <h2>Phase 1: Project Setup and Infrastructure</h2>
+            <div class="mermaid">
+                gantt
+                    title Project Setup Phase
+                    dateFormat YYYY-MM-DD
+                    axisFormat %b %d
+                    
+                    section Environment Setup
+                    Project Initialization    :2024-06-01, 3d
+                    Azure Services Setup      :2024-06-04, 4d
+                    Environment Configuration :2024-06-08, 3d
+                    
+                    section Core Infrastructure
+                    Email Integration Setup   :2024-06-11, 5d
+                    OCR Service Setup        :2024-06-16, 4d
+                    Storage Configuration    :2024-06-20, 3d
+            </div>
+        </div>
+
+        <!-- Development Phase -->
+        <div class="chart-container">
+            <h2>Phase 2: Core Development</h2>
+            <div class="mermaid">
+                gantt
+                    title Development Phase
+                    dateFormat YYYY-MM-DD
+                    axisFormat %b %d
+                    
+                    section Email Processing
+                    Email Handler Development :2024-06-23, 7d
+                    Email Templates Creation  :2024-06-30, 3d
+                    
+                    section Document Processing
+                    OCR Integration          :2024-07-03, 8d
+                    Document Parser Development :2024-07-11, 6d
+                    
+                    section Integration
+                    MBC Integration          :2024-07-17, 7d
+                    Blue Ocean Integration   :2024-07-24, 7d
+                    
+                    section Core Logic
+                    Reconciliation Logic     :2024-07-31, 8d
+                    Error Handling           :2024-08-08, 5d
+            </div>
+        </div>
+
+        <!-- Testing and Deployment -->
+        <div class="chart-container">
+            <h2>Phase 3: Testing and Deployment</h2>
+            <div class="mermaid">
+                gantt
+                    title Testing and Deployment Phase
+                    dateFormat YYYY-MM-DD
+                    axisFormat %b %d
+                    
+                    section Testing
+                    Unit Testing             :2024-08-13, 5d
+                    Integration Testing      :2024-08-18, 6d
+                    User Acceptance Testing  :2024-08-24, 5d
+                    
+                    section Deployment
+                    Production Setup         :2024-08-29, 4d
+                    Initial Deployment       :2024-09-02, 3d
+                    Monitoring Setup         :2024-09-05, 3d
+            </div>
+        </div>
+
+
+</body>
+</html> 
