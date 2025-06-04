@@ -366,57 +366,34 @@
             <h3><i class="fas fa-code-branch"></i> Detailed Process Flow</h3>
             <div class="diagram-container">
                 <div class="mermaid">
-                    graph TB
-                        A["Start"]
-                        B{"New Email?"}
-                        C["Parse Email"]
-                        D["Wait for Email"]
-                        E["Extract Attachments"]
-                        F{"Valid Format?"}
-                        G["OCR Processing"]
-                        H["Send Error Email"]
-                        I{"Data Complete?"}
-                        J["Query MBC API"]
-                        K["Manual Review"]
-                        L{"PO Found?"}
-                        M["Post to MBC"]
-                        N["Review Queue"]
-                        O["Store Document"]
-                        P["Send Confirmation"]
-                        Q["End"]
-                        R["Log Error"]
-                        S["Notify Team"]
-                        T["Update Status"]
+                    flowchart TD
+                        Start(["Start"]) --> NewEmail{"New Email?"}
+                        NewEmail -->|Yes| Parse["Parse Email"]
+                        NewEmail -->|No| Wait["Wait for Email"]
+                        Parse --> Extract["Extract Attachments"]
+                        Extract --> ValidFormat{"Valid Format?"}
+                        ValidFormat -->|Yes| OCR["OCR Processing"]
+                        ValidFormat -->|No| ErrorEmail["Send Error Email"]
+                        OCR --> DataComplete{"Data Complete?"}
+                        DataComplete -->|Yes| QueryMBC["Query MBC API"]
+                        DataComplete -->|No| ManualReview["Manual Review"]
+                        QueryMBC --> POFound{"PO Found?"}
+                        POFound -->|Yes| PostMBC["Post to MBC"]
+                        POFound -->|No| ReviewQueue["Review Queue"]
+                        PostMBC --> Store["Store Document"]
+                        Store --> Confirm["Send Confirmation"]
+                        Confirm --> End(["End"])
                         
-                        A --> B
-                        B -->|Yes| C
-                        B -->|No| D
-                        C --> E
-                        E --> F
-                        F -->|Yes| G
-                        F -->|No| H
-                        G --> I
-                        I -->|Yes| J
-                        I -->|No| K
-                        J --> L
-                        L -->|Yes| M
-                        L -->|No| N
-                        M --> O
-                        O --> P
-                        P --> Q
+                        ErrorEmail --> LogError["Log Error"]
+                        ManualReview --> LogError
+                        ReviewQueue --> LogError
+                        LogError --> NotifyTeam["Notify Team"]
+                        NotifyTeam --> UpdateStatus["Update Status"]
+                        UpdateStatus --> End
                         
-                        H --> R
-                        K --> R
-                        N --> R
-                        R --> S
-                        S --> T
-                        T --> Q
-                        
-                        style A fill:#0066cc,stroke:#004d99,color:white
-                        style Q fill:#38b000,stroke:#2b2d42,color:white
-                        style B,F,I,L fill:#f72585,stroke:#2b2d42,color:white
-                        style C,E,G,J,M,O,P fill:#004d99,stroke:#2b2d42,color:white
-                        style H,K,N,R,S,T fill:#d90429,stroke:#2b2d42,color:white
+                        style Start fill:#0066cc,stroke:#004d99,color:white
+                        style End fill:#38b000,stroke:#2b2d42,color:white
+                        style Wait fill:#004d99,stroke:#2b2d42,color:white
                 </div>
             </div>
 
