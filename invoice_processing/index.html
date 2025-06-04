@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HighGate Invoice Processing System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e2eafc;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --dark: #2b2d42;
+            --light: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-600: #6c757d;
+            --success: #38b000;
+            --error: #d90429;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--gray-100);
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: var(--light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Main content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 0.75rem;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            color: var(--dark);
+            margin: 1.5rem 0 1rem;
+            font-weight: 500;
+        }
+        
+        /* Diagrams */
+        .diagram-container {
+            max-width: 100%;
+            margin: 2rem auto;
+            background-color: var(--gray-100);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .svg-container {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+        }
+        
+        /* Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .card-title i {
+            background-color: var(--primary-light);
+            padding: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        /* Process Steps */
+        .process-step {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background-color: var(--gray-100);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--border-radius);
+        }
+        
+        .process-step h4 {
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .process-step h4 i {
+            margin-right: 0.75rem;
+        }
+        
+        /* Note */
+        .note {
+            background-color: rgba(247, 37, 133, 0.1);
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .note i {
+            color: var(--accent);
+            margin-right: 1rem;
+            font-size: 1.25rem;
+            margin-top: 0.2rem;
+        }
+        
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+        
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        tr {
+            background-color: var(--light);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        tr:nth-child(even) {
+            background-color: var(--gray-100);
+        }
+        
+        /* Features List */
+        .features-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .features-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .features-list li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--success);
+            position: absolute;
+            left: 0;
+            top: 0.2rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-section a {
+            color: var(--gray-200);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--gray-200);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--light);
+                padding: 1rem;
+                box-shadow: var(--box-shadow);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'neutral',
+                securityLevel: 'loose',
+                fontSize: 11,
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis',
+                    diagramPadding: 10
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">HighGate Invoice Processing</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#workflow">Workflow</a></li>
+                <li><a href="#modules">Modules</a></li>
+                <li><a href="#error-handling">Error Handling</a></li>
+                <li><a href="#technical">Technical Stack</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>HighGate Invoice Processing System</h1>
+        <p>An automated solution for processing Oracle PPR (Payment Process Request) batches through web automation</p>
+    </div>
+    
+    <!-- After the hero section, add this new section -->
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <section id="overview" class="section">
+            <h2><i class="fas fa-info-circle"></i>Overview</h2>
+            <p>
+                The HighGate Invoice Processing System automates the end-to-end process of submitting, managing, and tracking
+                Payment Process Request (PPR) through Oracle ERP. The system eliminates manual data entry, reduces processing 
+                time, and provides comprehensive tracking and reporting capabilities.
+            </p>
+            
+            <div class="note">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <p><strong>Key Benefits</strong></p>
+                    <ul class="features-list">
+                        <li>Automated batch processing of invoice data</li>
+                        <li>Integration with SharePoint for file storage and retrieval</li>
+                        <li>Comprehensive status tracking and reporting</li>
+                        <li>Robust error handling and recovery mechanisms</li>
+                        <li>Email notifications for process status updates</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="section">
+            <h2><i class="fas fa-cogs"></i>System Architecture</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TD
+                        A[Payment File Processing] --> B[Oracle Web Automation]
+                        B --> C[Approval Status Checking]
+                        D[Process Orchestration] --> A
+                        D --> B
+                        D --> C
+                        A -.-> E[SharePoint Storage]
+                        B -.-> E
+                        C -.-> E
+                        C -.-> F[Notification System]
+                        B <-.-> G[Oracle ERP System]
+                        
+                        classDef primary fill:#4361ee,stroke:#2b2d42,color:white;
+                        classDef secondary fill:#3f37c9,stroke:#2b2d42,color:white;
+                        classDef storage fill:#2b2d42,stroke:#4361ee,color:white;
+                        classDef external fill:#f72585,stroke:#2b2d42,color:white;
+                        
+                        class A,B,C primary;
+                        class D secondary;
+                        class E storage;
+                        class F,G external;
+                </div>
+            </div>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-file-alt"></i>
+                        Payment File Processing
+                    </div>
+                    <p>Processes excel files containing payment batch details and prepares data for Oracle submission</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-robot"></i>
+                        Oracle Web Automation
+                    </div>
+                    <p>Handles web automation for Oracle PPR submission, review, and approval initiation</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-check-circle"></i>
+                        Approval Status Checking
+                    </div>
+                    <p>Monitors approval status of submitted batches and generates status reports</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-tasks"></i>
+                        Process Orchestration
+                    </div>
+                    <p>Coordinates all processing activities, handles task scheduling and error recovery</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="process-flow" class="section">
+            <h2><i class="fas fa-sitemap"></i>Complete Process Flow</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TD
+                        %% Data Processing Stage
+                        Start([Start]) --> Excel[Excel File Input]
+                        Excel --> DataStructuring[Data Structuring]
+                        
+                        subgraph Data_Processing [Data Processing & Validation]
+                            DataStructuring --> |Group by BU & Payment Method| BatchCreation[Batch Creation]
+                            BatchCreation --> |Generate| BatchNumber["Batch Number<br/>{BU}{template_id}{MMDDHHMMYY}BOT"]
+                            BatchCreation --> Validation{Validation}
+                            Validation --> |Check| Credits[Credits Without Debits]
+                            Validation --> |Verify| Suppliers[Supplier Status]
+                            Credits --> |Flag| InvalidEntries[Flag Invalid Entries]
+                            Suppliers --> |Flag| InvalidEntries
+                        end
+                        
+                        %% Batch Processing Stage
+                        subgraph Batch_Processing [Batch Processing]
+                            InitialSubmit[Initial Batch Submit] --> TimeoutCheck{Check Timeouts}
+                            TimeoutCheck --> |Yes| RetryTimeout[Retry Timed-out Batches]
+                            TimeoutCheck --> |No| LoginCheck{Check Login Failures}
+                            RetryTimeout --> LoginCheck
+                            LoginCheck --> |Yes| RetryLogin[Retry Login<br/>Max 3 attempts]
+                            LoginCheck --> |No| SubmitCheck{Check Submit Failures}
+                            RetryLogin --> SubmitCheck
+                            SubmitCheck --> |Yes| RetrySubmit[Retry Submit<br/>Max 2 attempts]
+                            SubmitCheck --> |No| FinalProcess[Final Processing]
+                            RetrySubmit --> FinalProcess
+                        end
+                        
+                        %% PPR Submission Details
+                        subgraph PPR_Submission [PPR Submission]
+                            Navigate[Navigate to Submit PPR] --> FillForm[Fill Form Details]
+                            FillForm --> |Input| BatchDetails["- Batch Name<br/>- Payment Method<br/>- Template Code"]
+                            BatchDetails --> ProcessOptions[Set Processing Options]
+                            ProcessOptions --> Submit[Submit PPR]
+                            Submit --> |On Error| ErrorCapture[Capture Screenshot & Send Email]
+                        end
+                        
+                        %% Final Stage
+                        subgraph Final_Stage [Final Stage]
+                            CreateSummary[Create Summary Excel] --> SendEmail[Send Email Notification]
+                            SendEmail --> UploadSharePoint[Upload to SharePoint]
+                            UploadSharePoint --> RecordTime[Record Execution Time]
+                        end
+                        
+                        %% Connect the subgraphs
+                        InvalidEntries --> InitialSubmit
+                        FinalProcess --> Navigate
+                        Submit --> CreateSummary
+                        RecordTime --> End([End])
+                        
+                        %% Styling
+                        classDef primary fill:#4361ee,stroke:#2b2d42,color:white;
+                        classDef process fill:#3f37c9,stroke:#2b2d42,color:white;
+                        classDef decision fill:#f72585,stroke:#2b2d42,color:white;
+                        classDef error fill:#d90429,stroke:#2b2d42,color:white;
+                        classDef success fill:#38b000,stroke:#2b2d42,color:white;
+                        
+                        class Start,End primary;
+                        class DataStructuring,BatchCreation,InitialSubmit,Navigate,FillForm,Submit process;
+                        class Validation,TimeoutCheck,LoginCheck,SubmitCheck decision;
+                        class ErrorCapture error;
+                        class CreateSummary,SendEmail,UploadSharePoint,RecordTime success;
+                </div>
+            </div>
+        </section>
+       
+
+        <section id="workflow" class="section">
+            <h2><i class="fas fa-project-diagram"></i>Process Workflow</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    flowchart TD
+                        Start([Start]) --> Step1["Payment File Upload"]
+                        Step1 --> Step2["Batch Data Extraction"]
+                        Step2 --> Decision{"Process Branch"}
+                        Decision -->|PPR Submission| Step3a["Oracle Login & PPR Submit"]
+                        Decision -->|PPR Management| Step3b["Manage & Resume PPR"]
+                        Step3a --> Merge{"Process Merge"}
+                        Step3b --> Merge
+                        Merge --> Step4["Status Reporting & Monitor"]
+                        Step4 --> End([End])
+                        
+                        classDef primary fill:#4361ee,stroke:#2b2d42,color:white;
+                        classDef secondary fill:#3f37c9,stroke:#2b2d42,color:white;
+                        classDef decision fill:#f72585,stroke:#2b2d42,color:white;
+                        classDef endpoint fill:#2b2d42,stroke:#4361ee,color:white;
+                        
+                        class Step1,Step2,Step3a,Step3b,Step4 primary;
+                        class Decision,Merge decision;
+                        class Start,End endpoint;
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <h4><i class="fas fa-play-circle"></i>Step 1: Payment File Upload</h4>
+                <p>The system detects new payment files in SharePoint and validates their format for processing.</p>
+                <ul>
+                    <li>SharePoint file detection</li>
+                    <li>File format validation</li>
+                    <li>Initial data loading</li>
+                </ul>
+            </div>
+            
+            <div class="process-step">
+                <h4><i class="fas fa-table"></i>Step 2: Batch Data Extraction</h4>
+                <p>Excel files are parsed to extract batch details and normalized for Oracle submission.</p>
+                <ul>
+                    <li>Excel parsing & data normalization</li>
+                    <li>Batch preparation for Oracle</li>
+                    <li>Data validation</li>
+                </ul>
+            </div>
+            
+            <div class="process-step">
+                <h4><i class="fas fa-sign-in-alt"></i>Step 3a: Oracle Login & PPR Submit</h4>
+                <p>The system logs into Oracle and submits PPR details through the web interface.</p>
+                <ul>
+                    <li>SSO Authentication</li>
+                    <li>Submit PPR page navigation</li>
+                    <li>PPR detail entry & submission</li>
+                </ul>
+            </div>
+            
+            <div class="process-step">
+                <h4><i class="fas fa-tasks"></i>Step 3b: Manage & Resume PPR</h4>
+                <p>The system navigates to Manage PPR module to review installments and initialize approval.</p>
+                <ul>
+                    <li>Manage PPR page navigation</li>
+                    <li>Installment validation & review</li>
+                    <li>Resume PPR & approval initiation</li>
+                </ul>
+            </div>
+            
+            <div class="process-step">
+                <h4><i class="fas fa-chart-line"></i>Step 4: Status Reporting & Monitor</h4>
+                <p>The system tracks batch status and generates reports on approval progress.</p>
+                <ul>
+                    <li>Batch status tracking</li>
+                    <li>Approval verification</li>
+                    <li>Report generation and notification</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="modules" class="section">
+            <h2><i class="fas fa-puzzle-piece"></i>System Modules</h2>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-robot"></i>
+                        Oracle Bot Driver
+                    </div>
+                    <p>Core module orchestrating the automation process for Oracle PPR submissions</p>
+                    <ul>
+                        <li>Parallel batch processing</li>
+                        <li>Error handling and retry mechanisms</li>
+                        <li>Status tracking and reporting</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login Module
+                    </div>
+                    <p>Handles authentication to Oracle ERP system using SSO credentials</p>
+                    <ul>
+                        <li>SSO authentication</li>
+                        <li>2FA handling</li>
+                        <li>Environment-specific login</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-file-invoice"></i>
+                        Submit PPR Module
+                    </div>
+                    <p>Handles the submission of PPR details</p>
+                    <ul>
+                        <li>Navigation to Submit PPR page</li>
+                        <li>Form completion with batch data</li>
+                        <li>Submission and confirmation</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Manage PPR Module
+                    </div>
+                    <p>Handles review and management of PPR installments</p>
+                    <ul>
+                        <li>Navigation to Manage PPR page</li>
+                        <li>Installment review and validation</li>
+                        <li>Excel comparison and validation</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-play"></i>
+                        Resume PPR Module
+                    </div>
+                    <p>Handles resuming of PPR process after review</p>
+                    <ul>
+                        <li>Resume action initiation</li>
+                        <li>Confirmation handling</li>
+                        <li>Status verification</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-check-circle"></i>
+                        Approval Status Checking
+                    </div>
+                    <p>Checks and updates the approval status of submitted PPR batches</p>
+                    <ul>
+                        <li>Status retrieval from Oracle</li>
+                        <li>Status report generation</li>
+                        <li>Status update in tracking files</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="error-handling" class="section">
+            <h2><i class="fas fa-exclamation-triangle"></i>Error Handling and Resilience</h2>
+            
+            <table>
+                <tr>
+                    <th>Error Type</th>
+                    <th>Handling Strategy</th>
+                </tr>
+                <tr>
+                    <td>Navigation Failures</td>
+                    <td>Retry with exponential backoff</td>
+                </tr>
+                <tr>
+                    <td>Element Not Found</td>
+                    <td>Fallback to alternative XPaths/IDs</td>
+                </tr>
+                <tr>
+                    <td>Batch/Invoice Mismatches</td>
+                    <td>Report discrepancy and continue with next batch</td>
+                </tr>
+                <tr>
+                    <td>Network Timeouts</td>
+                    <td>Retry with increased timeouts</td>
+                </tr>
+                <tr>
+                    <td>Authentication Failures</td>
+                    <td>Relogin and retry</td>
+                </tr>
+            </table>
+            
+            <div class="note">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <p><strong>Enhanced Navigation Resilience</strong></p>
+                    <p>The system implements a robust retry mechanism for navigation operations:</p>
+                    <ul>
+                        <li>Multiple retry levels (outer loop for entire process, inner loop for individual links)</li>
+                        <li>Exponential backoff (5s, 10s, 20s) between retry attempts</li>
+                        <li>Alternative clicking methods (JavaScript fallback)</li>
+                        <li>Page refreshes between retry attempts</li>
+                        <li>Detailed logging of retry operations</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="technical" class="section">
+            <h2><i class="fas fa-laptop-code"></i>Technical Stack</h2>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fab fa-python"></i>
+                        Python
+                    </div>
+                    <p>Core programming language used for automation logic and control flow</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-globe"></i>
+                        Selenium
+                    </div>
+                    <p>Web automation framework used for browser control and element interaction</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-table"></i>
+                        Pandas
+                    </div>
+                    <p>Data processing library for handling Excel files and data manipulation</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-envelope"></i>
+                        Azure Logic Apps
+                    </div>
+                    <p>Email notification delivery and workflow integration</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fab fa-microsoft"></i>
+                        SharePoint API
+                    </div>
+                    <p>Document storage and retrieval for files and reports</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-key"></i>
+                        Azure Key Vault
+                    </div>
+                    <p>Secure storage for credentials and sensitive configuration</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Invoice Processing</h3>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#workflow">Workflow</a></li>
+                    <li><a href="#modules">Modules</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">User Guide</a></li>
+                    <li><a href="#">Developer Docs</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Related Systems</h3>
+                <ul>
+                    <li><a href="#">Marriott Portal Automation</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 BlueOcean SP - HighGate Invoice Processing System</p>
+        </div>
+    </footer>
+</body>
+</html> 
