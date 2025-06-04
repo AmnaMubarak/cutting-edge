@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriott Portal Invoice Automation - Process Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e2eafc;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --dark: #2b2d42;
+            --light: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-600: #6c757d;
+            --success: #38b000;
+            --error: #d90429;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--gray-100);
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: var(--light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Main content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 0.75rem;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            color: var(--dark);
+            margin: 1.5rem 0 1rem;
+            font-weight: 500;
+        }
+        
+        /* Diagrams */
+        .diagram-container {
+            max-width: 100%;
+            margin: 2rem auto;
+            background-color: var(--gray-100);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .mermaid {
+            font-size: 12px;
+            margin: 0 auto;
+        }
+        
+        /* Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .card-title i {
+            background-color: var(--primary-light);
+            padding: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        /* Other elements */
+        .code-example {
+            background-color: var(--dark);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+        }
+        
+        .step {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background-color: var(--gray-100);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--border-radius);
+        }
+        
+        .note {
+            background-color: rgba(247, 37, 133, 0.1);
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .note i {
+            color: var(--accent);
+            margin-right: 1rem;
+            font-size: 1.25rem;
+            margin-top: 0.2rem;
+        }
+        
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+        
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        tr {
+            background-color: var(--light);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        tr:nth-child(even) {
+            background-color: var(--gray-100);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-section a {
+            color: var(--gray-200);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--gray-200);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--light);
+                padding: 1rem;
+                box-shadow: var(--box-shadow);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'neutral',
+                securityLevel: 'loose',
+                fontSize: 11,
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis',
+                    diagramPadding: 10
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">Invoice Automation</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#process-flow">Process Flow</a></li>
+                <li><a href="#components">Components</a></li>
+                <li><a href="#data-flow">Data Flow</a></li>
+                <li><a href="#error-handling">Error Handling</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Marriott Portal Invoice Automation</h1>
+        <p>A comprehensive solution for automating invoice downloads from the Marriott vendor portal</p>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <section id="overview" class="section">
+            <h2><i class="fas fa-info-circle"></i>Overview</h2>
+            <p>
+                This documentation provides a comprehensive overview of the automated process for downloading 
+                invoices from the Marriott portal. The automation is designed to retrieve invoices systematically, 
+                providing error handling, notifications, and integration with SharePoint.
+            </p>
+        </section>
+
+        <section id="architecture" class="section">
+            <h2><i class="fas fa-cogs"></i>System Architecture</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TD
+                        A[Master Process] --> B[Marriott Driver]
+                        B --> C[Chrome Setup]
+                        B --> D[Login Page]
+                        B --> E[Load Lookup Data]
+                        B --> F[Invoice Selection]
+                        B --> G[Invoices Downloader]
+                        B --> H[Email Sender]
+                        B --> I[SharePoint Transfer]
+                        
+                        classDef primary fill:#4361ee,stroke:#2b2d42,color:white;
+                        classDef secondary fill:#3f37c9,stroke:#2b2d42,color:white;
+                        classDef accent fill:#f72585,stroke:#2b2d42,color:white;
+                        
+                        class A,B primary;
+                        class C,D,E,F,G secondary;
+                        class H,I accent;
+                </div>
+            </div>
+            <div class="note">
+                <i class="fas fa-lightbulb"></i>
+                <p>The architecture follows a modular design pattern, separating concerns between navigation, data loading, 
+                invoice selection, downloading, and notification components.</p>
+            </div>
+        </section>
+
+        <section id="process-flow" class="section">
+            <h2><i class="fas fa-project-diagram"></i>Process Flow</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    flowchart TD
+                        Start([Start]) --> ParseArgs[Parse Arguments]
+                        ParseArgs --> SetupDriver[Setup Driver]
+                        SetupDriver --> LoginToPortal[Login to Portal]
+                        LoginToPortal --> OTPAuth{OTP Auth}
+                        
+                        OTPAuth -->|Success| GetLookupData[Get Lookup Data]
+                        OTPAuth -->|Failure| RetryLogin{Retry?}
+                        RetryLogin -->|Yes| LoginToPortal
+                        RetryLogin -->|No| SendErrorEmail[Error Email]
+                        
+                        GetLookupData --> ProcessLookupFile[Process Lookup]
+                        ProcessLookupFile --> SelectInvoice[Select Invoice]
+                        SelectInvoice --> ConstructURL[Construct URL]
+                        ConstructURL --> DownloadInvoices[Download]
+                        
+                        DownloadInvoices --> ValidateDownloads{Validate?}
+                        ValidateDownloads -->|Success| MoveToSharePoint[Move to SharePoint]
+                        ValidateDownloads -->|Failure| SendErrorEmail
+                        
+                        MoveToSharePoint --> SendSuccessEmail[Success Email]
+                        SendSuccessEmail --> End([End])
+                        SendErrorEmail --> End
+                        
+                        classDef primary fill:#4361ee,stroke:#2b2d42,color:white;
+                        classDef success fill:#38b000,stroke:#2b2d42,color:white;
+                        classDef error fill:#d90429,stroke:#2b2d42,color:white;
+                        classDef decision fill:#3f37c9,stroke:#2b2d42,color:white;
+                        
+                        class Start,End,ParseArgs,SetupDriver,LoginToPortal,GetLookupData,ProcessLookupFile,SelectInvoice,ConstructURL,DownloadInvoices primary;
+                        class MoveToSharePoint,SendSuccessEmail success;
+                        class SendErrorEmail error;
+                        class OTPAuth,RetryLogin,ValidateDownloads decision;
+                </div>
+            </div>
+        </section>
+
+        <section id="components" class="section">
+            <h2><i class="fas fa-puzzle-piece"></i>Component Details</h2>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-play-circle"></i>Master Process</h3>
+                    <p>Entry point for automation that parses command-line arguments</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-cog"></i>Marriott Driver</h3>
+                    <p>Core orchestration component that coordinates the entire workflow</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-key"></i>Login Process</h3>
+                    <p>Handles authentication with OTP verification for secure access</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-table"></i>Lookup Data</h3>
+                    <p>Processes Excel data files for invoice identification</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-filter"></i>Invoice Selection</h3>
+                    <p>Selects appropriate invoices based on filters and criteria</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-download"></i>Invoice Download</h3>
+                    <p>Handles PDF file retrieval and validation</p>
+                </div>
+            </div>
+            
+            <h3>1. Master Process (master.py)</h3>
+            <p>Entry point for the automation that parses command-line arguments and initializes the Marriott Driver.</p>
+            <div class="code-example">
+                <pre>python master.py --module marriott --process invoice_download --email_list recipients@email.com --is_prod True --month 05-2023 --run_flow True</pre>
+            </div>
+            
+            <h3>2. Marriott Driver (marriott_driver.py)</h3>
+            <p>Core component that orchestrates the entire automation process:</p>
+            <ul>
+                <li>Initializes WebDriver</li>
+                <li>Manages the login process</li>
+                <li>Coordinates data loading and invoice selection</li>
+                <li>Handles downloads and validation</li>
+            </ul>
+            
+            <h3>3. Login Process (login_page.py)</h3>
+            <div class="step">
+                <ol>
+                    <li>Navigate to Marriott login page</li>
+                    <li>Enter username and password from Azure Key Vault</li>
+                    <li>Handle OTP authentication</li>
+                    <li>Verify successful login</li>
+                </ol>
+            </div>
+            
+            <h3>4. Lookup Data Processing (load_lookup_data.py)</h3>
+            <div class="step">
+                <ol>
+                    <li>Download lookup file from SharePoint or use local file</li>
+                    <li>Parse lookup data for properties and AR types</li>
+                    <li>Prepare data for invoice selection</li>
+                </ol>
+            </div>
+            
+            <h3>5. Invoice Selection (invoice_selection.py)</h3>
+            <div class="step">
+                <ol>
+                    <li>Select invoice date (either specified or derived from month parameter)</li>
+                    <li>Select appropriate AR types based on lookup data</li>
+                    <li>Apply filters for targeted invoice retrieval</li>
+                </ol>
+            </div>
+            
+            <h3>6. Invoice Download (invoices_download.py)</h3>
+            <div class="step">
+                <ol>
+                    <li>Construct URL with selected filters</li>
+                    <li>Navigate to invoice download page</li>
+                    <li>Export invoices in PDF format</li>
+                    <li>Validate downloaded files</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="data-flow" class="section">
+            <h2><i class="fas fa-exchange-alt"></i>Data Flow Diagram</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    flowchart LR
+                        A[(Azure Key Vault)] -->|Credentials| B(Marriott Driver)
+                        C[(SharePoint)] -->|Lookup File| B
+                        B -->|Login| D[Marriott Portal]
+                        D -->|Invoice Data| B
+                        B -->|Files| E[Local Storage]
+                        E -->|Transfer| C
+                        B -->|Notifications| F[Email System]
+                        
+                        classDef database fill:#2b2d42,stroke:#4361ee,color:white;
+                        classDef primary fill:#4361ee,stroke:#2b2d42,color:white;
+                        classDef system fill:#3f37c9,stroke:#2b2d42,color:white;
+                        
+                        class A,C,E database;
+                        class B primary;
+                        class D,F system;
+                </div>
+            </div>
+        </section>
+
+        <section id="error-handling" class="section">
+            <h2><i class="fas fa-exclamation-triangle"></i>Error Handling</h2>
+            <p>The system includes comprehensive error handling mechanisms:</p>
+            <table>
+                <tr>
+                    <th>Error Type</th>
+                    <th>Handling Mechanism</th>
+                </tr>
+                <tr>
+                    <td>Login Failures</td>
+                    <td>Multiple retry attempts with screenshots</td>
+                </tr>
+                <tr>
+                    <td>OTP Authentication Issues</td>
+                    <td>Validation checks with backup locators</td>
+                </tr>
+                <tr>
+                    <td>Lookup File Processing Errors</td>
+                    <td>Exception handling with error notifications</td>
+                </tr>
+                <tr>
+                    <td>Download Failures</td>
+                    <td>Validation and retry mechanisms</td>
+                </tr>
+                <tr>
+                    <td>SharePoint Transfer Issues</td>
+                    <td>Error logging and email notifications</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="conclusion" class="section">
+            <h2><i class="fas fa-check-circle"></i>Conclusion</h2>
+            <p>
+                The Marriott Portal Invoice Automation system provides a robust, efficient solution for automatically retrieving 
+                invoices from the Marriott vendor portal. This automation significantly reduces manual effort, minimizes human error, 
+                and ensures timely processing of invoices.
+            </p>
+            
+            <div class="card">
+                <h3 class="card-title"><i class="fas fa-trophy"></i>Key Benefits</h3>
+                <ul>
+                    <li>Elimination of manual login and navigation</li>
+                    <li>Standardized processing based on business rules</li>
+                    <li>Secure credential management through Azure Key Vault</li>
+                    <li>Comprehensive error handling with notifications</li>
+                    <li>Seamless integration with SharePoint</li>
+                    <li>Detailed logging for audit purposes</li>
+                </ul>
+            </div>
+            
+            <p>
+                Continuous improvements and maintenance ensure that the automation adapts to changes in the Marriott portal 
+                and evolving business requirements.
+            </p>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Invoice Automation</h3>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#process-flow">Process Flow</a></li>
+                    <li><a href="#components">Components</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Other Portals</h3>
+                <ul>
+                    <li><a href="#">Hilton</a></li>
+                    <li><a href="#">Hyatt</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">User Guide</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 BlueOcean SP - HighGate Brand Invoice Automation</p>
+        </div>
+    </footer>
+</body>
+</html> 
