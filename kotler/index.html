@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kottler Metals Vendor Statement Automation - Detailed Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-light: #e2eafc;
+            --secondary: #004d99;
+            --accent: #f72585;
+            --dark: #2b2d42;
+            --light: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-600: #6c757d;
+            --success: #38b000;
+            --error: #d90429;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--gray-100);
+        }
+        
+        .navbar {
+            background-color: var(--light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .diagram-container {
+            max-width: 100%;
+            margin: 2rem auto;
+            background-color: var(--gray-100);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .note {
+            background-color: rgba(247, 37, 133, 0.1);
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .note i {
+            color: var(--accent);
+            margin-right: 1rem;
+            font-size: 1.25rem;
+            margin-top: 0.2rem;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--light);
+                padding: 1rem;
+                box-shadow: var(--box-shadow);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'neutral',
+                securityLevel: 'loose',
+                fontSize: 11,
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis',
+                    diagramPadding: 10
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">Kottler Metals Automation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../main.html"><i class="fas fa-home"></i> Documentation Hub</a></li>
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#business-process">Business Process</a></li>
+                <li><a href="#technical-process">Technical Process</a></li>
+                <li><a href="#implementation">Implementation</a></li>
+                <li><a href="#data-flow">Data Flow</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Kottler Metals Vendor Statement Automation</h1>
+        <p>Comprehensive documentation for automating vendor statement processing with Microsoft Business Central integration</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <h2><i class="fas fa-info-circle"></i> Overview</h2>
+            <p class="lead">This documentation outlines the automated process for handling vendor statements at Kottler Metals, featuring direct integration with Microsoft Business Central.</p>
+            
+            <div class="note">
+                <i class="fas fa-lightbulb"></i>
+                <p>Key differentiator: Unlike previous implementations, this system integrates directly with Microsoft Business Central's PO module instead of JobBoss2.</p>
+            </div>
+        </section>
+
+        <!-- Business Process Flow -->
+        <section id="business-process" class="section">
+            <h2><i class="fas fa-project-diagram"></i> Business Process Flow</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph LR
+                        A["Vendor"]
+                        B["KottlerAP Email"]
+                        C["BlueOceanAP"]
+                        D["Data Extraction"]
+                        E["Invoice Data"]
+                        F["PO Data - MBC"]
+                        G["Business Central"]
+                        H["Document Storage"]
+                        
+                        A --> B
+                        B --> C
+                        C --> D
+                        D --> E
+                        E --> F
+                        F --> G
+                        G --> H
+                        
+                        style A fill:#0066cc,stroke:#004d99,color:white
+                        style B fill:#0066cc,stroke:#004d99,color:white
+                        style C fill:#0066cc,stroke:#004d99,color:white
+                        style D fill:#004d99,stroke:#2b2d42,color:white
+                        style E fill:#004d99,stroke:#2b2d42,color:white
+                        style F fill:#004d99,stroke:#2b2d42,color:white
+                        style G fill:#f72585,stroke:#2b2d42,color:white
+                        style H fill:#f72585,stroke:#2b2d42,color:white
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Process Flow -->
+        <section id="technical-process" class="section">
+            <h2><i class="fas fa-cogs"></i> Technical Architecture</h2>
+            <p class="lead">The technical implementation follows a modular architecture with distinct components handling specific responsibilities.</p>
+            
+            <div class="note">
+                <i class="fas fa-info-circle"></i>
+                <p>The system is built with error handling and retry mechanisms at each step to ensure robust processing.</p>
+            </div>
+
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TD
+                        A[Email Receiver] --> B[Email Parser]
+                        B --> C[OCR Service]
+                        C --> D[Data Validator]
+                        D --> E[MBC Integration]
+                        E --> F[Document Storage]
+                        
+                        B1[Error Handler] --> A
+                        B1 --> B
+                        B1 --> C
+                        B1 --> D
+                        B1 --> E
+                        B1 --> F
+                        
+                        classDef default fill:#0066cc,stroke:#004d99,color:white;
+                        classDef error fill:#d90429,stroke:#2b2d42,color:white;
+                        
+                        class A,B,C,D,E,F default;
+                        class B1 error;
+                </div>
+            </div>
+
+            <h3><i class="fas fa-layer-group"></i> System Components</h3>
+            <div class="card-container">
+                <div class="card">
+                    <h4><i class="fas fa-envelope"></i> Email Receiver</h4>
+                    <ul>
+                        <li>Monitors KottlerAP@kottlermetals.com</li>
+                        <li>Filters relevant vendor invoices</li>
+                        <li>Forwards to BlueOceanAP@BlueOceansp.ai</li>
+                        <li>Maintains email threading</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h4><i class="fas fa-file-alt"></i> Email Parser</h4>
+                    <ul>
+                        <li>Extracts attachments</li>
+                        <li>Validates file formats</li>
+                        <li>Identifies invoice types</li>
+                        <li>Prepares for OCR processing</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h4><i class="fas fa-brain"></i> OCR Service</h4>
+                    <ul>
+                        <li>Performs text extraction</li>
+                        <li>Identifies key fields</li>
+                        <li>Maps data to schema</li>
+                        <li>Validates extraction quality</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-code-branch"></i> Detailed Process Flow</h3>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        A["Start"]
+                        B{"New Email?"}
+                        C["Parse Email"]
+                        D["Wait for Email"]
+                        E["Extract Attachments"]
+                        F{"Valid Format?"}
+                        G["OCR Processing"]
+                        H["Send Error Email"]
+                        I{"Data Complete?"}
+                        J["Query MBC API"]
+                        K["Manual Review"]
+                        L{"PO Found?"}
+                        M["Post to MBC"]
+                        N["Review Queue"]
+                        O["Store Document"]
+                        P["Send Confirmation"]
+                        Q["End"]
+                        R["Log Error"]
+                        S["Notify Team"]
+                        T["Update Status"]
+                        
+                        A --> B
+                        B -->|Yes| C
+                        B -->|No| D
+                        C --> E
+                        E --> F
+                        F -->|Yes| G
+                        F -->|No| H
+                        G --> I
+                        I -->|Yes| J
+                        I -->|No| K
+                        J --> L
+                        L -->|Yes| M
+                        L -->|No| N
+                        M --> O
+                        O --> P
+                        P --> Q
+                        
+                        H --> R
+                        K --> R
+                        N --> R
+                        R --> S
+                        S --> T
+                        T --> Q
+                        
+                        style A fill:#0066cc,stroke:#004d99,color:white
+                        style Q fill:#38b000,stroke:#2b2d42,color:white
+                        style B,F,I,L fill:#f72585,stroke:#2b2d42,color:white
+                        style C,E,G,J,M,O,P fill:#004d99,stroke:#2b2d42,color:white
+                        style H,K,N,R,S,T fill:#d90429,stroke:#2b2d42,color:white
+                </div>
+            </div>
+
+            <div class="step-details">
+                <h3><i class="fas fa-list-ol"></i> Process Steps</h3>
+                <div class="step">
+                    <h4>1. Email Reception and Validation</h4>
+                    <ul>
+                        <li>System monitors dedicated email inbox</li>
+                        <li>Validates sender and email format</li>
+                        <li>Checks for required attachments</li>
+                        <li>Initiates processing workflow</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>2. Document Processing</h4>
+                    <ul>
+                        <li>Extracts attachments from email</li>
+                        <li>Validates file formats (PDF, Excel, etc.)</li>
+                        <li>Prepares documents for OCR</li>
+                        <li>Maintains audit trail</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>3. OCR and Data Extraction</h4>
+                    <ul>
+                        <li>Performs OCR on documents</li>
+                        <li>Extracts key fields:
+                            <ul>
+                                <li>Invoice Number</li>
+                                <li>Date</li>
+                                <li>Amount</li>
+                                <li>PO Reference</li>
+                                <li>Vendor Details</li>
+                            </ul>
+                        </li>
+                        <li>Validates data quality</li>
+                        <li>Flags issues for review</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>4. MBC Integration</h4>
+                    <ul>
+                        <li>Queries MBC API for PO validation</li>
+                        <li>Matches invoice to PO data</li>
+                        <li>Validates amounts and details</li>
+                        <li>Posts matched invoices</li>
+                        <li>Handles exceptions and errors</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>5. Document Management</h4>
+                    <ul>
+                        <li>Stores processed documents in SharePoint</li>
+                        <li>Follows naming convention:
+                            <code>Customer\AP invoices\Year\Vendor\Month\invoice</code>
+                        </li>
+                        <li>Maintains version control</li>
+                        <li>Ensures audit compliance</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>6. Error Handling and Notifications</h4>
+                    <ul>
+                        <li>Implements retry mechanisms</li>
+                        <li>Sends notifications for:
+                            <ul>
+                                <li>Processing errors</li>
+                                <li>Validation failures</li>
+                                <li>Manual review requirements</li>
+                                <li>Successful processing</li>
+                            </ul>
+                        </li>
+                        <li>Maintains error logs</li>
+                        <li>Provides error resolution paths</li>
+                    </ul>
+                </div>
+            </div>
+
+            <style>
+                .step-details {
+                    margin-top: 2rem;
+                }
+                .step {
+                    background-color: var(--light);
+                    border-radius: var(--border-radius);
+                    padding: 1.5rem;
+                    margin-bottom: 1.5rem;
+                    border-left: 4px solid var(--primary);
+                }
+                .step h4 {
+                    color: var(--primary);
+                    margin-bottom: 1rem;
+                }
+                .step ul {
+                    margin-left: 1.5rem;
+                }
+                .step ul ul {
+                    margin-top: 0.5rem;
+                }
+                code {
+                    background-color: var(--gray-100);
+                    padding: 0.2rem 0.4rem;
+                    border-radius: 4px;
+                    font-family: monospace;
+                }
+            </style>
+        </section>
+
+        <!-- Data Flow Section -->
+        <section id="data-flow" class="section">
+            <h2><i class="fas fa-exchange-alt"></i> Data Flow</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                    flowchart LR
+                        A[(Email System)] -->|Invoices| B(OCR Engine)
+                        C[(Microsoft BC)] -->|PO Data| D{Matching Engine}
+                        B -->|Extracted Data| D
+                        D -->|Matched Data| C
+                        D -->|Documents| E[(SharePoint)]
+                        
+                        classDef database fill:#0066cc,stroke:#004d99,color:white;
+                        classDef process fill:#004d99,stroke:#2b2d42,color:white;
+                        classDef engine fill:#f72585,stroke:#2b2d42,color:white;
+                        
+                        class A,C,E database;
+                        class B,D process;
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Section -->
+        <section id="implementation" class="section">
+            <h2><i class="fas fa-tools"></i> Implementation Components</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3><i class="fas fa-envelope"></i> Email Processing</h3>
+                    <ul>
+                        <li>Automated email forwarding</li>
+                        <li>Email parsing and validation</li>
+                        <li>Attachment handling</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-brain"></i> OCR Processing</h3>
+                    <ul>
+                        <li>Data field extraction</li>
+                        <li>Accuracy validation</li>
+                        <li>Error handling</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-link"></i> MBC Integration</h3>
+                    <ul>
+                        <li>API authentication</li>
+                        <li>PO data retrieval</li>
+                        <li>Invoice posting</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-archive"></i> Document Management</h3>
+                    <ul>
+                        <li>SharePoint integration</li>
+                        <li>File organization</li>
+                        <li>Version control</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Documentation</h3>
+                <ul>
+                    <li><a href="../main.html">Documentation Hub</a></li>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#business-process">Business Process</a></li>
+                    <li><a href="#technical-process">Technical Process</a></li>
+                    <li><a href="#implementation">Implementation</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">User Guide</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:KottlerAP@kottlermetals.com">KottlerAP@kottlermetals.com</a></li>
+                    <li><a href="mailto:BlueOceanAP@BlueOceansp.ai">BlueOceanAP@BlueOceansp.ai</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Kottler Metals - Vendor Statement Automation</p>
+        </div>
+    </footer>
+</body>
+</html> 
