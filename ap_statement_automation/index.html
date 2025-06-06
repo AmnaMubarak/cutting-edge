@@ -428,7 +428,7 @@
                 <div class="mermaid">
                     flowchart TD
                         Start([Start]) --> A[Schedule Monthly Statement Request]
-                        A --> B[Generate and Send Email to Vendor]
+                        A --> B[Generate and Send Email of Open Invoice to Vendor]
                         B --> C{Monitor Inbox}
                         
                         C -->|No Response| D[Send Reminder After 3 Days]
@@ -454,17 +454,25 @@
                         
                         N -->|Missing Invoices| O[Generate Missing Invoice Report]
                         O --> P[Create Vendor Response]
+                        P --> R[Send Response Email]
+                        R --> S1{Check Response}
+                        S1 -->|No Response| S2[Wait 3 Days]
+                        S2 --> S3[Send Reminder Email]
+                        S3 --> S1
+                        S1 -->|Response Received| S[Update Audit Log]
                         
                         N -->|All Matched| Q[Generate Success Report]
                         Q --> P
                         
-                        P --> R[Send Response Email]
-                        R --> S[Update Audit Log]
+                        N -->|Payment In Transit| R1[Generate Payment In Transit Report]
+                        R1 --> P
+                        
                         S --> End([End])
                         
                         style Start fill:#2563eb,color:white
                         style End fill:#2563eb,color:white
                         style N fill:#f59e0b,color:white
+                        style S1 fill:#f59e0b,color:white
                         style F fill:#f59e0b,color:white
                         style C fill:#f59e0b,color:white
                 </div>
