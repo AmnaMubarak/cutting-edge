@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kottler Metals - Implementation Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-light: #e2eafc;
+            --secondary: #004d99;
+            --accent: #f72585;
+            --dark: #2b2d42;
+            --light: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-600: #6c757d;
+            --success: #38b000;
+            --error: #d90429;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--gray-100);
+        }
+        
+        .navbar {
+            background-color: var(--light);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase {
+            margin-bottom: 3rem;
+        }
+
+        .phase-header {
+            background: var(--primary-light);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .component {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .component h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .methodology {
+            background: var(--gray-100);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+        }
+
+        .methodology h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .clarifications {
+            background: rgba(247, 37, 133, 0.1);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+        }
+
+        .clarifications h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .edge-cases {
+            background: var(--gray-200);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+        }
+
+        .edge-cases h4 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        ul li::before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+        }
+
+        .risks {
+            background: var(--error);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 2rem;
+        }
+
+        .risks h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .risks ul li::before {
+            color: white;
+        }
+        
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">Kottler Metals Automation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Documentation</a></li>
+                <li><a href="#phase1" class="active">Implementation Plan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>AI Agent Implementation Plan</h1>
+        <p>Detailed development roadmap for automated RFQ → Quote → PO → Work Order workflow</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section">
+            <h2><i class="fas fa-bullseye"></i> Objective</h2>
+            <p>Fully automated, zero-keyboard workflows for RFQ → Quote → PO → Work Order.</p>
+        </section>
+
+        <!-- Phase 1 -->
+        <section id="phase1" class="section phase">
+            <div class="phase-header">
+                <h2><i class="fas fa-1"></i> Phase 1: Setup & Digitization (Months 1–2)</h2>
+            </div>
+
+            <div class="component">
+                <h3><i class="fas fa-robot"></i> Comms Bot: Email Classification & Response</h3>
+                
+                <div class="methodology">
+                    <h4>Development Methodology</h4>
+                    <ul>
+                        <li>Setup shared mailboxes (quotes@, orders@, status@)</li>
+                        <li>Use Power Automate to classify incoming mail by keywords and route to GPT API</li>
+                        <li>Responses saved as drafts in Outlook or posted to Teams</li>
+                        <li>Secure API access via Microsoft Graph and Azure Key Vault</li>
+                    </ul>
+                </div>
+
+                <div class="edge-cases">
+                    <h4>Edge Cases</h4>
+                    <ul>
+                        <li>Emails with conflicting intents → route to ReviewBot</li>
+                        <li>Spam → implement keyword/ML-based filtering</li>
+                    </ul>
+                </div>
+
+                <div class="clarifications">
+                    <h4>Client Clarifications Needed</h4>
+                    <ul>
+                        <li>What email provider and infrastructure are used?</li>
+                        <li>What are the primary mailbox addresses and aliases?</li>
+                        <li>Top 10 most common email intents?</li>
+                        <li>Access to sample historical emails for training?</li>
+                        <li>Auto-send or draft review preference?</li>
+                        <li>Email signature and branding requirements?</li>
+                        <li>Preferred tone and writing style?</li>
+                        <li>Data privacy and retention policies?</li>
+                        <li>Email archiving requirements?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="component">
+                <h3><i class="fas fa-sync"></i> Ops Sync Bot: Data Hygiene & System Sync</h3>
+                
+                <div class="methodology">
+                    <h4>Development Methodology</h4>
+                    <ul>
+                        <li>Power Automate flows to sync emails/tasks to CRM and Dataverse</li>
+                        <li>Monitor and auto-create records from email metadata</li>
+                    </ul>
+                </div>
+
+                <div class="edge-cases">
+                    <h4>Edge Cases</h4>
+                    <ul>
+                        <li>Missing data in emails</li>
+                    </ul>
+                </div>
+
+                <div class="clarifications">
+                    <h4>Client Clarifications Needed</h4>
+                    <ul>
+                        <li>Which CRM is currently used?</li>
+                        <li>Required email data fields for CRM sync?</li>
+                        <li>Auto-create or review for new CRM entries?</li>
+                        <li>Duplicate detection and management?</li>
+                        <li>CRM tagging/labeling schemes?</li>
+                        <li>Task creation triggers?</li>
+                        <li>System update SLA requirements?</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2 -->
+        <section id="phase2" class="section phase">
+            <div class="phase-header">
+                <h2><i class="fas fa-2"></i> Phase 2: Core Agent Development (Months 3–6)</h2>
+            </div>
+
+            <div class="component">
+                <h3><i class="fas fa-file-invoice-dollar"></i> Quote Bot: RFQ Parsing & Quote Generation</h3>
+                
+                <div class="methodology">
+                    <h4>Development Methodology</h4>
+                    <ul>
+                        <li>Azure Form Recognizer for structured data extraction</li>
+                        <li>Business rules for pricing using SQL/SharePoint lists</li>
+                        <li>Quote generation using python-docx or Power Automate</li>
+                        <li>SharePoint integration and notification system</li>
+                    </ul>
+                </div>
+
+                <div class="clarifications">
+                    <h4>Client Clarifications Needed</h4>
+                    <ul>
+                        <li>Sample RFQs in different formats</li>
+                        <li>Priority supplier/customer formats</li>
+                        <li>Key data extraction points</li>
+                        <li>Part number standardization</li>
+                        <li>Historical pricing references</li>
+                        <li>Margin calculation rules</li>
+                        <li>Quote template requirements</li>
+                        <li>Delivery terms handling</li>
+                        <li>Customer-specific branding</li>
+                        <li>Quote versioning strategy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Additional Phase 2 components... -->
+        </section>
+
+        <!-- Phase 3 -->
+        <section id="phase3" class="section phase">
+            <div class="phase-header">
+                <h2><i class="fas fa-3"></i> Phase 3: Full Workflow Integration (Months 7–9)</h2>
+            </div>
+            <!-- Phase 3 components... -->
+        </section>
+
+        <!-- Phase 4 -->
+        <section id="phase4" class="section phase">
+            <div class="phase-header">
+                <h2><i class="fas fa-4"></i> Phase 4: Zero-Touch Optimization (Months 10–12)</h2>
+            </div>
+            <!-- Phase 4 components... -->
+        </section>
+
+        <!-- Risks Section -->
+        <section class="risks">
+            <h2><i class="fas fa-exclamation-triangle"></i> Risks & Mitigations</h2>
+            <ul>
+                <li><strong>Data Quality:</strong> Begin with internal audits + client-provided samples</li>
+                <li><strong>Security & Compliance:</strong> Azure Key Vault, audit logs, opt-out mechanisms</li>
+                <li><strong>Change Management:</strong> Phased rollout with human-in-loop early on</li>
+                <li><strong>Integration Failures:</strong> Staged testing with fallbacks to manual processes</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <p>&copy; 2025 BlueOcean</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 
